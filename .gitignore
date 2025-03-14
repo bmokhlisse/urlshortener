@@ -39,7 +39,12 @@ out/
 ### Kotlin ###
 .kotlin
 
-### ignore committing build diretories ###
-target/
+# Ignore build artifacts
+/build/
+/out/
 .gradle/
 .idea/
+*.log
+
+# Ignore environment-specific config
+application-*.yml

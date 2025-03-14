@@ -1,0 +1,6 @@
+CREATE TABLE url_mapping (
+    id BIGSERIAL PRIMARY KEY,
+    short_id VARCHAR(10) UNIQUE NOT NULL,
+    long_url TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

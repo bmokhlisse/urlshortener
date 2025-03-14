@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://staging-db-host:5432/urlshortener_stg
+    username: stg_user
+    password: stg_password
+    driver-class-name: org.postgresql.Driver
+
+  redis:
+    host: staging-redis-host
+    port: 6379
+
+server:
+  port: 8081
+
+logging:
+  level:
+    root: INFO

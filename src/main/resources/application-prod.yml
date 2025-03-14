@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-db-host:5432/urlshortener_prod
+    username: prod_user
+    password: prod_password
+    driver-class-name: org.postgresql.Driver
+
+  redis:
+    host: prod-redis-host
+    port: 6379
+
+server:
+  port: 8082
+
+logging:
+  level:
+    root: WARN

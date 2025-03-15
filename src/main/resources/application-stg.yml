@@ -17,4 +17,4 @@ logging:
     root: INFO
 
 app:
-  domain: "http://stg.dkb.com"
+  domain: "http://stg.kurz.li"

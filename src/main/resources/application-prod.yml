@@ -17,4 +17,4 @@ logging:
     root: WARN
 
 app:
-  domain: "http://dkb.com"
+  domain: "http://kurz.li"

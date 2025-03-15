@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.context.annotation.Import
+import org.springframework.data.redis.connection.RedisConnection
+import org.springframework.data.redis.connection.RedisServerCommands
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
@@ -43,11 +45,14 @@ class UrlShorteningControllerIntegrationTest {
     fun setup() {
         baseUrl = "http://localhost:$port"
         repository.deleteAll()
-        redisTemplate.connectionFactory?.connection?.flushAll() // TODO
+        redisTemplate.execute<Void?> { connection ->
+            connection.serverCommands().flushDb()
+            null
+        }
     }
 
     @Test
-    fun `should shorten a URL` () {
+    fun `should shorten a URL`() {
         // Given
         val request = ShortenRequest(url = testUrl)
         val uri = "$baseUrl/shorten"
@@ -71,7 +76,7 @@ class UrlShorteningControllerIntegrationTest {
     }
 
     @Test
-    fun  `should retrieve original URL and 320 redirect` () {
+    fun `should retrieve original URL and 320 redirect`() {
         // Given
         val request = ShortenRequest(url = testUrl)
         val shortenUri = "$baseUrl/shorten"
@@ -80,7 +85,7 @@ class UrlShorteningControllerIntegrationTest {
         val shortId = shortUrl.substringAfterLast("/")
 
         // When
-        val redirectUri = UriComponentsBuilder.fromHttpUrl("$baseUrl/$shortId").toUriString()
+        val redirectUri = UriComponentsBuilder.fromUriString("$baseUrl/$shortId").toUriString()
         val redirectResponse = restTemplate.getForEntity(redirectUri, Void::class.java)
 
         // Then

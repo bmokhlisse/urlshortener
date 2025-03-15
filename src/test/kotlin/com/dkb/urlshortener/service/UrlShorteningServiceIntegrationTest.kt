@@ -1,9 +1,12 @@
 package com.dkb.urlshortener.service
 
 import com.dkb.urlshortener.config.TestcontainersConfiguration
+import com.dkb.urlshortener.exception.InvalidUrlException
+import com.dkb.urlshortener.exception.ShortUrlNotFoundException
 import com.dkb.urlshortener.repository.UrlMappingRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -71,12 +74,27 @@ class UrlShorteningServiceIntegrationTest {
     }
 
     @Test
-    fun `should return null when shortId does not exist`() {
-        // When
-        val actualLongUrl = urlShorteningService.getLongUrl("non existing url")
+    fun `should throw ShortUrlNotFoundException when shortId does not exist` () {
+        // Given
+        val nonExistingShortId = "nonExistingId"
 
-        // Then
-        assertNull(actualLongUrl, "getLongUrl should return null for non existing shortId")
+        // When & Then
+        val exception = assertThrows<ShortUrlNotFoundException> {
+            urlShorteningService.getLongUrl(nonExistingShortId)
+        }
+        assertEquals("No URL found for shortId: $nonExistingShortId", exception.message)
+    }
+
+    @Test
+    fun `should throw InvalidUrlException when given url is not valid` () {
+        // Given
+        val nonValidUrl = "http//www.dkb.com"
+
+        // When & Then
+        val exception = assertThrows<InvalidUrlException> {
+            urlShorteningService.shortenUrl(nonValidUrl)
+        }
+        assertEquals("The provided URL is not valid: $nonValidUrl", exception.message)
     }
 
 }

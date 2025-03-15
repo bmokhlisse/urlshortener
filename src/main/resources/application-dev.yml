@@ -13,3 +13,6 @@ spring:
 logging:
   level:
     root: DEBUG
+
+app:
+  domain: "http://localhost:8080"

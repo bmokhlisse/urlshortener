@@ -18,3 +18,6 @@ spring:
 
 server:
   port: 8080
+
+app:
+  domain: "http://localhost:8080"

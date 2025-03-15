@@ -15,3 +15,6 @@ server:
 logging:
   level:
     root: INFO
+
+app:
+  domain: "http://stg.dkb.com"
